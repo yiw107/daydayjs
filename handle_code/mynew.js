@@ -1,9 +1,9 @@
 function mynew(Func,...args){
-    const obj ={};
+    const obj ={};//1.新建一个对象
     if(Func.prototype){
-        Object.setPrototypeOf(obj,Func.prototype);
+        Object.setPrototypeOf(obj,Func.prototype);//2.将新建对象的原型设置为Func.prototype
     }
-    const result = Func.apply(obj, args);
+    const result = Func.apply(obj, args);//3.修改this指向，指向obj
     if(typeof result==="function"||(typeof result==="object"&&result!==null)){
         return result;
     }

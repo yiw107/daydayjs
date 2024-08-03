@@ -7,6 +7,54 @@
     <script type="text/javascript" src="../js/vue.js"></script>
 </head>
 <body>
-    
+    <div id="app">
+        <button @click="changeTabs('child1')">child1</button>
+        <button @click="changeTabs('child2')">child2</button>
+        <button @click="changeTabs('child3')">child3</button>
+        <component :is="chooseTabs" inline-template>
+          <span>{{test}}</span>
+        </component>
+      </div>
 </body>
+<script type="text/javascript">
+var child1 = {
+  data() {
+    return {
+      test: 'content1'
+    }
+  }
+}
+var child2 = {
+  data() {
+    return {
+      test: 'content2'
+    }
+  }
+}
+var child3 = {
+  data() {
+    return {
+      test: 'content3'
+    }
+  }
+}
+var vm = new Vue({
+  el: '#app',
+  components: {
+    child1,
+    child2,
+    child3
+  },
+  data() {
+    return {
+      chooseTabs: 'child1',
+    }
+  },
+  methods: {
+    changeTabs(tab) {
+      this.chooseTabs = tab;
+    }
+  }
+})
+</script>
 </html>

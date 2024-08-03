@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script type="text/javascript" src="./js/vue.js"></script> -->
+</head>
+<body>
+    <div>
+        <input type="text" id="input">
+        <ul id="list"></ul>
+        <button id="send">发送</button>
+        <button id="stop">断开</button>
+    </div>
+</body>
+<script>
+    // jsonp跨域
+    // const jsonp=(name)=>{
+    //     let script = document.createElement('script');
+    //     script.src = 'http://localhost:3000/api/jsonp?callback='+name;
+    //     document.body.appendChild(script);
+    //     return new Promise((resolve, reject)=>{
+    //             window[name]=(data)=>{
+    //                 resolve(data);
+    //             }
+    //     })
+    // }
+    // jsonp(`callback${new Date().getTime()}`).then(res=>{
+    //     console.log(res)
+    // })
+//fetch方法跨域
+    // fetch('/api/json').then(res=>res.json()).then(res=>{
+    //     console.log(res)
+    // })
+
+// websocket心跳检测
+const ws = new WebSocket('ws://localhost:8080');
+// 使用open来监测是否连接成功
+ws.addEventListener('open', function(event){
+    console.log('连接成功啦')
+})
+let input = document.querySelector('#input')
+let btn = document.querySelector('#send')
+let list = document.querySelector('#list')
+const stop = document.querySelector('#stop');
+btn.addEventListener('click', function(){
+    //发送输入的消息
+    if(input.value){
+        ws.send(input.value)
+        input.value = ''
+    }
+    
+});
+stop.addEventListener('click', () => {
+         ws.close()
+      })
+//接收后端回传回来的消息
+ws.addEventListener('message',(e)=>{
+    let data= JSON.parse(e.data)
+    let li = document.createElement('li')
+    if (data.state==2){
+        li.innerText = e.data
+        list.appendChild(li)
+    }
+})
+</script>
+</html>
